@@ -4,6 +4,6 @@ namespace CurlingScheduler.Model
 {
     internal class Schedule
     {
-        public IEnumerable<Week> Weeks { get; set; }
+        public List<Week> Weeks { get; set; }
     }
 }

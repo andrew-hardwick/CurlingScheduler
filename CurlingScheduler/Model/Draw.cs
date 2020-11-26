@@ -4,6 +4,6 @@ namespace CurlingScheduler.Model
 {
     internal class Draw
     {
-        public IEnumerable<Game> Games { get; set; }
+        public List<Game> Games { get; set; } = new List<Game>();
     }
 }

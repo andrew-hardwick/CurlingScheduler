@@ -1,4 +1,4 @@
 ﻿namespace CurlingScheduler.Model
 {
-    public enum DrawAlignment { Balacned, Squished }
+    public enum DrawAlignment { Balanced, Squished }
 }

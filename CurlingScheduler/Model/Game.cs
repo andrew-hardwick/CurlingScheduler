@@ -6,8 +6,6 @@ namespace CurlingScheduler.Model
     {
         public IEnumerable<Team> Teams { get; set; }
 
-        public int Draw { get; set; }
-
         public int Sheet { get; set; }
     }
 }
