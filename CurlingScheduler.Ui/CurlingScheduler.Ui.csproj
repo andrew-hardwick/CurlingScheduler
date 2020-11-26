@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\ILMerge.3.0.41\build\ILMerge.props" Condition="Exists('..\packages\ILMerge.3.0.41\build\ILMerge.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -14,6 +15,8 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +36,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
@@ -152,4 +158,51 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\ILMerge.3.0.41\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILMerge.3.0.41\build\ILMerge.props'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(TARGETDIR)\\lib"
+
+move "$(TARGETDIR)\\*" "$(TARGETDIR)\\lib"
+
+move "$(TARGETDIR)\\lib\CurlingScheduler.Ui.exe" "$(TARGETDIR)"
+move "$(TARGETDIR)\\lib\CurlingScheduler.Ui.exe.config" "$(TARGETDIR)"
+
+del /q "$(TARGETDIR)\\cs-CZ"
+rd "$(TARGETDIR)\\cs-CZ"
+
+del /q "$(TARGETDIR)\\de"
+rd "$(TARGETDIR)\\de"
+
+del /q "$(TARGETDIR)\\es"
+rd "$(TARGETDIR)\\es"
+
+del /q "$(TARGETDIR)\\fr"
+rd "$(TARGETDIR)\\fr"
+
+del /q "$(TARGETDIR)\\hu"
+rd "$(TARGETDIR)\\hu"
+
+del /q "$(TARGETDIR)\\it"
+rd "$(TARGETDIR)\\it"
+
+del /q "$(TARGETDIR)\\pt-BR"
+rd "$(TARGETDIR)\\pt-BR"
+
+del /q "$(TARGETDIR)\\ro"
+rd "$(TARGETDIR)\\ro"
+
+del /q "$(TARGETDIR)\\ru"
+rd "$(TARGETDIR)\\ru"
+
+del /q "$(TARGETDIR)\\sv"
+rd "$(TARGETDIR)\\sv"
+
+del /q "$(TARGETDIR)\\zh-Hans"
+rd "$(TARGETDIR)\\zh-Hans"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
