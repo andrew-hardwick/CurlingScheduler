@@ -8,7 +8,7 @@ namespace CurlingScheduler.Service
     public class ScheduleCreator
     {
         private readonly GameScheduler _gameScheduler = new GameScheduler();
-        private readonly DrawBalancer _drawScheduler = new DrawBalancer();
+        private readonly DrawSheetBalancer _drawScheduler = new DrawSheetBalancer();
 
         private readonly OutputWriter _outputWriter = new OutputWriter();
 
@@ -35,7 +35,6 @@ namespace CurlingScheduler.Service
             //Balance Stones
 
             _outputWriter.Write(schedule, "C:\\Users\\drewh\\Desktop\\testSchedule.dat");
-            _outputWriter.Write(teams, "C:\\Users\\drewh\\Desktop\\testTeams.dat");
         }
     }
 }

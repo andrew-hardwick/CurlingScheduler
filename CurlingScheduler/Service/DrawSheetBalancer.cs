@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CurlingScheduler.Service
 {
-    internal class DrawBalancer : Balancer
+    internal class DrawSheetBalancer : Balancer
     {
 
         internal Schedule Schedule(
