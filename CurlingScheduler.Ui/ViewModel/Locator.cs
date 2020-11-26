@@ -1,4 +1,5 @@
 ﻿using CommonServiceLocator;
+using CurlingScheduler.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using Unity;
 using Unity.Lifetime;
 using Unity.ServiceLocation;
 
-namespace CurlingScheduler.ViewModel
+namespace CurlingScheduler.Ui.ViewModel
 {
     public class Locator
     {
@@ -17,6 +18,7 @@ namespace CurlingScheduler.ViewModel
             var container = new UnityContainer();
 
             container.RegisterType<MainViewModel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ScheduleCreator>(new ContainerControlledLifetimeManager());
 
             ServiceLocator.SetLocatorProvider(() => new UnityServiceLocator(container));
         }

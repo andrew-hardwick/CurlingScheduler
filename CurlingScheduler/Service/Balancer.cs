@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CurlingScheduler.Service
 {
-    public class ScheduleCreator
+    internal class Balancer
     {
     }
 }

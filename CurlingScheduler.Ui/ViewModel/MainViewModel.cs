@@ -1,4 +1,5 @@
-﻿using CurlingScheduler.Service;
+﻿using CurlingScheduler.Model;
+using CurlingScheduler.Service;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace CurlingScheduler.ViewModel
+namespace CurlingScheduler.Ui.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
@@ -19,6 +20,7 @@ namespace CurlingScheduler.ViewModel
         private string _teamsText = string.Empty;
 
         private int _sheetCount = 4;
+        private int _weekCount = 8;
         private int _drawCount = 1;
         private int _drawCountMinimum = 1;
 
@@ -33,9 +35,9 @@ namespace CurlingScheduler.ViewModel
 
         public RelayCommand GenerateSchedule => _generateSchedule ?? (_generateSchedule = new RelayCommand(() =>
         {
+            var alignment = (DrawAlignment)Enum.Parse(typeof(DrawAlignment), DrawAlignment);
 
-            //add code to generate schedule here
-            Console.WriteLine("GenerateSchedule Called");
+            _scheduleCreator.CreateSchedule(_teams, SheetCount, DrawCount, WeekCount, alignment);
         }));
 
         private void UpdateDrawCountMinimum()
@@ -85,6 +87,12 @@ namespace CurlingScheduler.ViewModel
                 Set(() => SheetCount, ref _sheetCount, value);
                 UpdateDrawCountMinimum();
             }
+        }
+
+        public int WeekCount
+        {
+            get => _weekCount;
+            set => Set(() => WeekCount, ref _weekCount, value);
         }
 
         public int DrawCount

@@ -1,7 +1,7 @@
-﻿<Application x:Class="CurlingScheduler.App"
+﻿<Application x:Class="CurlingScheduler.Ui.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:CurlingScheduler.ViewModel"
+             xmlns:vm="clr-namespace:CurlingScheduler.Ui.ViewModel"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <vm:Locator x:Key="Locator" />
