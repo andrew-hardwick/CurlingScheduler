@@ -28,7 +28,9 @@ namespace CurlingScheduler.Service
         {
             var games = new List<Game>();
 
-            var teamsByGames = teams.Values.OrderBy(t => t.OpposingTeamCounts.Sum(c => c.Value)).ToList();
+            var teamsByGames = 
+                teams.Values.OrderBy(t => t.OpposingTeamCounts.Sum(c => c.Value))
+                            .ToList();
 
             var week = new Week();
 
@@ -46,9 +48,6 @@ namespace CurlingScheduler.Service
                 games.Add(new Game { Teams = new Team[] { primary, opponent } });
             }
 
-            var draw = new Draw { Games = games };
-
-            week.Draws = new Draw[] { draw };
             week.UnbalancedGames = games;
 
             return week;
@@ -58,7 +57,8 @@ namespace CurlingScheduler.Service
             IEnumerable<Team> teams,
             Team primary)
         {
-            var teamsByOpponentCount = teams.OrderBy(t => t.OpposingTeamCounts[primary.Name]);
+            var teamsByOpponentCount =
+                teams.OrderBy(t => t.OpposingTeamCounts[primary.Name]);
 
             return teamsByOpponentCount.ElementAt(0);
         }

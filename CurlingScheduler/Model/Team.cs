@@ -8,6 +8,7 @@ namespace CurlingScheduler.Model
     {
         public Team(
             IEnumerable<string> allTeamNames,
+            int drawCount,
             string name)
         {
             Name = name;
@@ -16,15 +17,20 @@ namespace CurlingScheduler.Model
             {
                 OpposingTeamCounts[opponent] = 0;
             }
+
+            foreach (var index in Enumerable.Range(0, drawCount))
+            {
+                DrawCounts[index] = 0;
+            }
         }
 
         public string Name { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public Dictionary<string, int> OpposingTeamCounts { get; } =
             new Dictionary<string, int>();
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public Dictionary<int, int> DrawCounts { get; } =
             new Dictionary<int, int>();
     }

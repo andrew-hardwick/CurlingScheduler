@@ -54,7 +54,7 @@
     <Compile Include="Model\Team.cs" />
     <Compile Include="Model\Week.cs" />
     <Compile Include="Service\Balancer.cs" />
-    <Compile Include="Service\DrawSheetBalancer.cs" />
+    <Compile Include="Service\DrawBalancer.cs" />
     <Compile Include="Service\GameScheduler.cs" />
     <Compile Include="Service\OutputWriter.cs" />
     <Compile Include="Service\ScheduleCreator.cs" />

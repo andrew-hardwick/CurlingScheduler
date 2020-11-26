@@ -8,6 +8,6 @@ namespace CurlingScheduler.Model
         public IEnumerable<Draw> Draws { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<Game> UnbalancedGames { get; set; }
+        public List<Game> UnbalancedGames { get; set; }
     }
 }

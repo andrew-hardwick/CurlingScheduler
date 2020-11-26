@@ -8,7 +8,7 @@ namespace CurlingScheduler.Service
     public class ScheduleCreator
     {
         private readonly GameScheduler _gameScheduler = new GameScheduler();
-        private readonly DrawSheetBalancer _drawScheduler = new DrawSheetBalancer();
+        private readonly DrawBalancer _drawScheduler = new DrawBalancer();
 
         private readonly OutputWriter _outputWriter = new OutputWriter();
 
@@ -16,25 +16,39 @@ namespace CurlingScheduler.Service
 
         public void CreateSchedule(
             IEnumerable<string> teamNames,
-            int SheetCount,
-            int DrawCount,
-            int WeekCount,
+            int sheetCount,
+            int drawCount,
+            int weekCount,
             DrawAlignment drawAlignment)
         {
             var teams = teamNames.OrderBy(n => _random.Next(10000))
-                                 .Select(n => new Team(teamNames, n))
-                                 .ToDictionary(n => n.Name, n=> n);
+                                 .Select(n => new Team(teamNames, drawCount, n))
+                                 .ToDictionary(n => n.Name, n => n);
 
             //Schedule Games
-            var schedule = _gameScheduler.Schedule(ref teams, WeekCount);
+            var schedule = _gameScheduler.Schedule(ref teams, weekCount);
 
             //Balance Draws
+
+            _drawScheduler.Schedule(
+                ref teams, 
+                ref schedule, 
+                weekCount, 
+                drawCount,
+                sheetCount,
+                drawAlignment);
 
             //Balance Sheets
 
             //Balance Stones
 
-            _outputWriter.Write(schedule, "C:\\Users\\drewh\\Desktop\\testSchedule.dat");
+            _outputWriter.Write(
+                schedule,
+                "C:\\Users\\drewh\\Desktop\\testSchedule.dat");
+
+            //_outputWriter.Write(
+            //    teams, 
+            //    "C:\\Users\\drewh\\Desktop\\testTeams.dat");
         }
     }
 }
