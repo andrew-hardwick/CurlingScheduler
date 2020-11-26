@@ -55,20 +55,20 @@ namespace CurlingScheduler.Service
             {
                 foreach (var drawIndex in Enumerable.Range(0, drawCount))
                 {
-                    if (schedule.Weeks[weekIndex].UnbalancedGames.Count() == 0)
+                    if (schedule.Weeks[weekIndex].GamesWithoutDrawAssignment.Count() == 0)
                     {
                         schedule.Weeks[weekIndex].Draws = draws;
                         return;
                     }
 
                     var orderedGames =
-                        schedule.Weeks[weekIndex].UnbalancedGames.OrderBy(
+                        schedule.Weeks[weekIndex].GamesWithoutDrawAssignment.OrderBy(
                             g => g.Teams.Select(t => t.DrawCounts[drawIndex]).Sum()
                             );
 
                     var selectedGame = orderedGames.ElementAt(0);
 
-                    schedule.Weeks[weekIndex].UnbalancedGames.Remove(selectedGame);
+                    schedule.Weeks[weekIndex].GamesWithoutDrawAssignment.Remove(selectedGame);
 
                     teams[selectedGame.Teams.ElementAt(0).Name].DrawCounts[drawIndex]++;
                     teams[selectedGame.Teams.ElementAt(1).Name].DrawCounts[drawIndex]++;
@@ -93,20 +93,20 @@ namespace CurlingScheduler.Service
             {
                 foreach (var sheetIndex in Enumerable.Range(0, sheetCount))
                 {
-                    if (schedule.Weeks[weekIndex].UnbalancedGames.Count() == 0)
+                    if (schedule.Weeks[weekIndex].GamesWithoutDrawAssignment.Count() == 0)
                     {
                         schedule.Weeks[weekIndex].Draws = draws;
                         return;
                     }
 
                     var orderedGames =
-                        schedule.Weeks[weekIndex].UnbalancedGames.OrderBy(
+                        schedule.Weeks[weekIndex].GamesWithoutDrawAssignment.OrderBy(
                             g => g.Teams.Select(t => t.DrawCounts[drawIndex]).Sum()
                             );
 
                     var selectedGame = orderedGames.ElementAt(0);
 
-                    schedule.Weeks[weekIndex].UnbalancedGames.Remove(selectedGame);
+                    schedule.Weeks[weekIndex].GamesWithoutDrawAssignment.Remove(selectedGame);
 
                     teams[selectedGame.Teams.ElementAt(0).Name].DrawCounts[drawIndex]++;
                     teams[selectedGame.Teams.ElementAt(1).Name].DrawCounts[drawIndex]++;

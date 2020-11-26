@@ -48,7 +48,7 @@ namespace CurlingScheduler.Service
                 games.Add(new Game { Teams = new Team[] { primary, opponent } });
             }
 
-            week.UnbalancedGames = games;
+            week.GamesWithoutDrawAssignment = games;
 
             return week;
         }

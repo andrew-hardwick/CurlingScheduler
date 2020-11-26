@@ -59,6 +59,7 @@
     <Compile Include="Service\OutputWriter.cs" />
     <Compile Include="Service\ScheduleCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\SheetBalancer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

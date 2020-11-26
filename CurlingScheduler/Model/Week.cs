@@ -5,9 +5,9 @@ namespace CurlingScheduler.Model
 {
     internal class Week
     {
-        public IEnumerable<Draw> Draws { get; set; }
+        public List<Draw> Draws { get; set; }
 
         [JsonIgnore]
-        public List<Game> UnbalancedGames { get; set; }
+        public List<Game> GamesWithoutDrawAssignment { get; set; }
     }
 }

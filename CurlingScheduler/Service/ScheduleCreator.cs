@@ -9,6 +9,7 @@ namespace CurlingScheduler.Service
     {
         private readonly GameScheduler _gameScheduler = new GameScheduler();
         private readonly DrawBalancer _drawScheduler = new DrawBalancer();
+        private readonly SheetBalancer _sheetBalancer = new SheetBalancer();
 
         private readonly OutputWriter _outputWriter = new OutputWriter();
 
@@ -22,7 +23,7 @@ namespace CurlingScheduler.Service
             DrawAlignment drawAlignment)
         {
             var teams = teamNames.OrderBy(n => _random.Next(10000))
-                                 .Select(n => new Team(teamNames, drawCount, n))
+                                 .Select(n => new Team(n, teamNames, drawCount, sheetCount))
                                  .ToDictionary(n => n.Name, n => n);
 
             //Schedule Games
@@ -39,6 +40,12 @@ namespace CurlingScheduler.Service
                 drawAlignment);
 
             //Balance Sheets
+            _sheetBalancer.Schedule(
+                ref teams,
+                ref schedule,
+                weekCount,
+                drawCount,
+                sheetCount);
 
             //Balance Stones
 
@@ -47,7 +54,7 @@ namespace CurlingScheduler.Service
                 "C:\\Users\\drewh\\Desktop\\testSchedule.dat");
 
             //_outputWriter.Write(
-            //    teams, 
+            //    teams,
             //    "C:\\Users\\drewh\\Desktop\\testTeams.dat");
         }
     }
