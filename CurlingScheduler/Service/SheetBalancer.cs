@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CurlingScheduler.Service
 {
-    internal class SheetBalancer: Balancer
+    internal class SheetBalancer
     {
         internal void Schedule(
             ref Dictionary<string, Team> teams,

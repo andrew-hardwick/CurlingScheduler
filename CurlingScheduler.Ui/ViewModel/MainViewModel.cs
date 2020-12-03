@@ -24,6 +24,8 @@ namespace CurlingScheduler.Ui.ViewModel
         private int _drawCount = 1;
         private int _drawCountMinimum = 1;
 
+        private bool _balanceStones = true;
+
         private IEnumerable<string> _teams;
         private ScheduleCreator _scheduleCreator;
 
@@ -37,7 +39,7 @@ namespace CurlingScheduler.Ui.ViewModel
         {
             var alignment = (DrawAlignment)Enum.Parse(typeof(DrawAlignment), DrawAlignment);
 
-            _scheduleCreator.CreateSchedule(_teams, SheetCount, DrawCount, WeekCount, alignment);
+            _scheduleCreator.CreateSchedule(_teams, SheetCount, DrawCount, WeekCount, alignment, BalanceStones);
         }));
 
         private void UpdateDrawCountMinimum()
@@ -105,6 +107,12 @@ namespace CurlingScheduler.Ui.ViewModel
         {
             get => _drawCountMinimum;
             set => Set(() => DrawCountMinimum, ref _drawCountMinimum, value);
+        }
+
+        public bool BalanceStones
+        {
+            get => _balanceStones;
+            set => Set(() => BalanceStones, ref _balanceStones, value);
         }
     }
 }

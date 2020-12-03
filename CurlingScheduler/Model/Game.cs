@@ -7,5 +7,7 @@ namespace CurlingScheduler.Model
         public IEnumerable<Team> Teams { get; set; }
 
         public int Sheet { get; set; }
+
+        public int Stones { get; set; }
     }
 }

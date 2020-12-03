@@ -27,6 +27,7 @@ namespace CurlingScheduler.Model
             foreach (var index in Enumerable.Range(0, sheetCount))
             {
                 SheetCounts[index] = 0;
+                StoneCounts[index] = 0;
             }
         }
 
@@ -42,6 +43,10 @@ namespace CurlingScheduler.Model
 
         [JsonIgnore]
         public Dictionary<int, int> SheetCounts { get; } =
+            new Dictionary<int, int>();
+
+        [JsonIgnore]
+        public Dictionary<int, int> StoneCounts { get; } =
             new Dictionary<int, int>();
     }
 }
