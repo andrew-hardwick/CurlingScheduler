@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CurlingScheduler.Service
 {
-    internal class DrawBalancer : Balancer
+    internal class DrawBalancer
     {
         internal void Schedule(
             ref Dictionary<string, Team> teams,

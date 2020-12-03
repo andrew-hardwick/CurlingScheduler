@@ -10,6 +10,7 @@ namespace CurlingScheduler.Service
         private readonly GameScheduler _gameScheduler = new GameScheduler();
         private readonly DrawBalancer _drawScheduler = new DrawBalancer();
         private readonly SheetBalancer _sheetBalancer = new SheetBalancer();
+        private readonly StoneBalancer _stoneBalancer = new StoneBalancer();
 
         private readonly OutputWriter _outputWriter = new OutputWriter();
 
@@ -20,7 +21,8 @@ namespace CurlingScheduler.Service
             int sheetCount,
             int drawCount,
             int weekCount,
-            DrawAlignment drawAlignment)
+            DrawAlignment drawAlignment,
+            bool balanceStones)
         {
             var teams = teamNames.OrderBy(n => _random.Next(10000))
                                  .Select(n => new Team(n, teamNames, drawCount, sheetCount))
@@ -48,6 +50,15 @@ namespace CurlingScheduler.Service
                 sheetCount);
 
             //Balance Stones
+            if (balanceStones)
+            {
+                _stoneBalancer.Schedule(
+                    ref teams,
+                    ref schedule,
+                    weekCount,
+                    drawCount,
+                    sheetCount);
+            }
 
             _outputWriter.Write(
                 schedule,
