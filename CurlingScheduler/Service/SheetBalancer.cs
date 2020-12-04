@@ -80,6 +80,7 @@ namespace CurlingScheduler.Service
 
                     availableSheetIndices.Remove(choice);
                     schedule.Weeks[weekIndex].Draws[drawIndex].Games[gameIndex].Sheet = choice;
+                    schedule.Weeks[weekIndex].Draws[drawIndex].Games[gameIndex].Stones = choice;
 
                     var name = schedule.Weeks[weekIndex].Draws[drawIndex].Games[gameIndex].Teams.ElementAt(0).Name;
                     teams[name].SheetCounts[choice]++;
