@@ -77,7 +77,8 @@ namespace CurlingScheduler.Ui.ViewModel
             {
                 Set(() => TeamsText, ref _teamsText, value);
 
-                _teams = TeamsText.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                _teams = TeamsText.Split(new[] { Environment.NewLine }, StringSplitOptions.None)
+                                  .ToHashSet() ;
 
                 UpdateDrawCountMinimum();
             }
