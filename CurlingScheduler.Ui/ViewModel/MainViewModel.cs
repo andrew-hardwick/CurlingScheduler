@@ -2,9 +2,11 @@
 using CurlingScheduler.Service;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 
 namespace CurlingScheduler.Ui.ViewModel
@@ -12,12 +14,16 @@ namespace CurlingScheduler.Ui.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private RelayCommand _generateSchedule;
+        private RelayCommand _openFile;
+        private RelayCommand _saveFile;
 
         private ObservableCollection<string> _availableDrawAlignment =
             new ObservableCollection<string>(new string[] { "Balanced", "Squished" });
 
         private string _drawAlignment = "Squished";
         private string _teamsText = string.Empty;
+        private string _gameSchedule = string.Empty;
+        private string _stoneSchedule = string.Empty;
 
         private int _sheetCount = 4;
         private int _weekCount = 8;
@@ -39,8 +45,52 @@ namespace CurlingScheduler.Ui.ViewModel
         {
             var alignment = (DrawAlignment)Enum.Parse(typeof(DrawAlignment), DrawAlignment);
 
-            _scheduleCreator.CreateSchedule(_teams, SheetCount, DrawCount, WeekCount, alignment, BalanceStones);
+            (GameSchedule, StoneSchedule) = _scheduleCreator.CreateSchedule(_teams, SheetCount, DrawCount, WeekCount, alignment, BalanceStones);
         }));
+
+        public RelayCommand OpenFile => _openFile ?? (_openFile = new RelayCommand(() =>
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "txt files (*.txt)|*.txt";
+            var result = dialog.ShowDialog();
+
+            if (result.Value == true)
+            {
+                string userFile = dialog.FileName;
+
+                TeamsText = LoadStringsFromFile(userFile);           
+            }
+        }));
+
+        public RelayCommand SaveFile => _saveFile ?? (_saveFile = new RelayCommand(() =>
+        {
+            var savedialog = new SaveFileDialog();
+            savedialog.Filter = "txt files (*.txt)|*.txt";
+            var result = savedialog.ShowDialog();
+
+            if (result.Value == true)
+            {
+                string filename = savedialog.FileName;
+
+                if (!File.Exists(filename))
+                {
+                    using (StreamWriter sw = File.CreateText(filename))
+                    {
+                        sw.Write(TeamsText);
+                    }
+                }
+
+            }
+
+
+        }));
+
+        private string LoadStringsFromFile(string userFile)
+        {
+            string lines = File.ReadAllText(userFile);
+
+            return lines;
+        }
 
         private void UpdateDrawCountMinimum()
         {
@@ -75,10 +125,23 @@ namespace CurlingScheduler.Ui.ViewModel
             {
                 Set(() => TeamsText, ref _teamsText, value);
 
-                _teams = TeamsText.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                _teams = TeamsText.Split(new[] { Environment.NewLine }, StringSplitOptions.None)
+                                  .ToHashSet() ;
 
                 UpdateDrawCountMinimum();
             }
+        }
+
+        public string GameSchedule
+        {
+            get => _gameSchedule;
+            set => Set(() => GameSchedule, ref _gameSchedule, value);
+        }
+
+        public string StoneSchedule
+        {
+            get => _stoneSchedule;
+            set => Set(() => StoneSchedule, ref _stoneSchedule, value);
         }
 
         public int SheetCount
