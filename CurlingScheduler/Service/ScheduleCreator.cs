@@ -62,7 +62,7 @@ namespace CurlingScheduler.Service
 
             _outputWriter.Write(
                 schedule,
-                "C:\\Users\\drewh\\Desktop\\testSchedule.dat");
+                "C:\\Users\\spaceman\\Desktop\\testSchedule.txt");
 
             //_outputWriter.Write(
             //    teams,

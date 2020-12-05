@@ -2,9 +2,11 @@
 using CurlingScheduler.Service;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 
 namespace CurlingScheduler.Ui.ViewModel
@@ -12,6 +14,8 @@ namespace CurlingScheduler.Ui.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private RelayCommand _generateSchedule;
+        private RelayCommand _openFile;
+        private RelayCommand _saveFile;
 
         private ObservableCollection<string> _availableDrawAlignment =
             new ObservableCollection<string>(new string[] { "Balanced", "Squished" });
@@ -41,6 +45,50 @@ namespace CurlingScheduler.Ui.ViewModel
 
             _scheduleCreator.CreateSchedule(_teams, SheetCount, DrawCount, WeekCount, alignment, BalanceStones);
         }));
+
+        public RelayCommand OpenFile => _openFile ?? (_openFile = new RelayCommand(() =>
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "txt files (*.txt)|*.txt";
+            var result = dialog.ShowDialog();
+
+            if (result.Value == true)
+            {
+                string userFile = dialog.FileName;
+
+                TeamsText = LoadStringsFromFile(userFile);           
+            }
+        }));
+
+        public RelayCommand SaveFile => _saveFile ?? (_saveFile = new RelayCommand(() =>
+        {
+            var savedialog = new SaveFileDialog();
+            savedialog.Filter = "txt files (*.txt)|*.txt";
+            var result = savedialog.ShowDialog();
+
+            if (result.Value == true)
+            {
+                string filename = savedialog.FileName;
+
+                if (!File.Exists(filename))
+                {
+                    using (StreamWriter sw = File.CreateText(filename))
+                    {
+                        sw.Write(TeamsText);
+                    }
+                }
+
+            }
+
+
+        }));
+
+        private string LoadStringsFromFile(string userFile)
+        {
+            string lines = File.ReadAllText(userFile);
+
+            return lines;
+        }
 
         private void UpdateDrawCountMinimum()
         {
