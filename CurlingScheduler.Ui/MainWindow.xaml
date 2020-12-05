@@ -44,7 +44,21 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
-    <Border Margin="10" Background="#0b1226" BorderBrush="#f2f2f2" BorderThickness="1">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open Teams File" Command="{Binding OpenFile}"/>
+                <MenuItem Header="_Save Teams" Command="{Binding SaveFile}"/>
+                <MenuItem Header="Save _As" />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+        </Menu>
+    <Border Grid.Row="1" Margin="10" Background="#0b1226" BorderBrush="#f2f2f2" BorderThickness="1">
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -64,15 +78,6 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
-            <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_Open Teams File" Command="{Binding OpenFile}"/>
-                    <MenuItem Header="_Save Teams" Command="{Binding SaveFile}"/>
-                    <MenuItem Header="_Save As" />
-                    <Separator />
-                    <MenuItem Header="_Exit" />
-                </MenuItem>
-            </Menu>
 
             <Label Grid.Row="1" Grid.Column="0" Margin="5" HorizontalAlignment="Left" Content="Number of Sheets" />
             <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" Margin="5" Padding="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FormatString="N0" Increment="1" Minimum="1" Value="{Binding SheetCount, Mode=TwoWay}" />
@@ -112,5 +117,6 @@
                 </TabItem>
             </TabControl>
         </Grid>
-    </Border>
+        </Border>
+    </Grid>
 </Window>
