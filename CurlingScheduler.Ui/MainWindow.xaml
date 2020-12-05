@@ -55,7 +55,7 @@
                 <MenuItem Header="_Save Teams" Command="{Binding SaveFile}"/>
                 <MenuItem Header="Save _As" />
                 <Separator />
-                <MenuItem Header="_Exit" />
+                <MenuItem Header="_Exit" Command="{Binding ExitProgram}"/>
             </MenuItem>
         </Menu>
     <Border Grid.Row="1" Margin="10" Background="#0b1226" BorderBrush="#f2f2f2" BorderThickness="1">
