@@ -22,6 +22,8 @@ namespace CurlingScheduler.Ui.ViewModel
 
         private string _drawAlignment = "Squished";
         private string _teamsText = string.Empty;
+        private string _gameSchedule = string.Empty;
+        private string _stoneSchedule = string.Empty;
 
         private int _sheetCount = 4;
         private int _weekCount = 8;
@@ -43,7 +45,7 @@ namespace CurlingScheduler.Ui.ViewModel
         {
             var alignment = (DrawAlignment)Enum.Parse(typeof(DrawAlignment), DrawAlignment);
 
-            _scheduleCreator.CreateSchedule(_teams, SheetCount, DrawCount, WeekCount, alignment, BalanceStones);
+            (GameSchedule, StoneSchedule) = _scheduleCreator.CreateSchedule(_teams, SheetCount, DrawCount, WeekCount, alignment, BalanceStones);
         }));
 
         public RelayCommand OpenFile => _openFile ?? (_openFile = new RelayCommand(() =>
@@ -127,6 +129,18 @@ namespace CurlingScheduler.Ui.ViewModel
 
                 UpdateDrawCountMinimum();
             }
+        }
+
+        public string GameSchedule
+        {
+            get => _gameSchedule;
+            set => Set(() => GameSchedule, ref _gameSchedule, value);
+        }
+
+        public string StoneSchedule
+        {
+            get => _stoneSchedule;
+            set => Set(() => StoneSchedule, ref _stoneSchedule, value);
         }
 
         public int SheetCount

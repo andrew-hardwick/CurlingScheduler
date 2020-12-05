@@ -16,7 +16,7 @@ namespace CurlingScheduler.Service
 
         private Random _random = new Random();
 
-        public void CreateSchedule(
+        public (string, string) CreateSchedule(
             IEnumerable<string> teamNames,
             int sheetCount,
             int drawCount,
@@ -60,9 +60,11 @@ namespace CurlingScheduler.Service
                     sheetCount);
             }
 
-            _outputWriter.Write(
-                schedule,
-                "C:\\Users\\spaceman\\Desktop\\testSchedule.txt");
+            return (_outputWriter.FormatGameSchedule(schedule), _outputWriter.FormatStoneSchedule(schedule));
+
+            //_outputWriter.Write(
+            //    schedule,
+            //    "C:\\Users\\drewh\\Desktop\\testSchedule.dat");
 
             //_outputWriter.Write(
             //    teams,
