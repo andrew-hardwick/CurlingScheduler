@@ -11,7 +11,7 @@ namespace CurlingScheduler.Service
             ref Schedule schedule,
             int weekCount,
             int drawCount,
-            int sheetCount,
+            int drawGameCount,
             DrawAlignment drawAlignment)
         {
             foreach (var weekIndex in Enumerable.Range(0, weekCount))
@@ -34,7 +34,7 @@ namespace CurlingScheduler.Service
                             ref schedule,
                             weekIndex,
                             drawCount,
-                            sheetCount);
+                            drawGameCount);
 
                         break;
                 }

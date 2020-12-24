@@ -11,9 +11,12 @@ namespace CurlingScheduler.Service
     internal class OutputWriter
     {
         internal string FormatGameSchedule(
-            Schedule schedule)
+            Schedule schedule,
+            int sheetCount)
         {
             var lines = new List<string>();
+
+            var sheets = GetSheetList(sheetCount);
 
             for (int weekIndex = 0; weekIndex < schedule.Weeks.Count(); weekIndex++)
             {
@@ -25,15 +28,22 @@ namespace CurlingScheduler.Service
                 }
                 lines.Add($"Week {weekIndex + 1}");
 
-                for(int drawIndex= 0; drawIndex < week.Draws.Count(); drawIndex++)
+                for (int drawIndex = 0; drawIndex < week.Draws.Count(); drawIndex++)
                 {
-                    var draw = week.Draws[drawIndex];
-
-                    lines.Add($"  Draw { drawIndex + 1}");
-
-                    foreach (var game in draw.Games)
+                    if (week.Draws[drawIndex].Games.Count() != 0)
                     {
-                        lines.Add($"    {(char)(game.Sheet + 'A')} - {game.Teams.ElementAt(0).Name} vs {game.Teams.ElementAt(1).Name}");
+                        var draw = week.Draws[drawIndex];
+
+                        lines.Add($"  Draw { drawIndex + 1}");
+
+                        var drawGames = new List<string>();
+
+                        foreach (var game in draw.Games)
+                        {
+                            drawGames.Add($"    {sheets[game.Sheet]} - {game.Teams.ElementAt(0).Name} vs {game.Teams.ElementAt(1).Name}");
+                        }
+
+                        lines.AddRange(drawGames.OrderBy(l => l).ToArray());
                     }
                 }
             }
@@ -41,9 +51,13 @@ namespace CurlingScheduler.Service
             return string.Join(Environment.NewLine, lines);
         }
 
-        internal string FormatStoneSchedule(Schedule schedule)
+        internal string FormatStoneSchedule(
+            Schedule schedule,
+            int sheetCount)
         {
             var lines = new List<string>();
+
+            var sheets = GetSheetList(sheetCount);
 
             for (int weekIndex = 0; weekIndex < schedule.Weeks.Count(); weekIndex++)
             {
@@ -67,13 +81,37 @@ namespace CurlingScheduler.Service
                     }
                 }
 
+                var weekSheetStones = new List<string>();
+
                 foreach (var key in sheetStoneMapping.Keys)
                 {
-                    lines.Add($"  {(char)(key + 'A')} - {sheetStoneMapping[key]}");
+                    weekSheetStones.Add($"  {sheets[key]} - {sheetStoneMapping[key]}");
                 }
+
+                lines.AddRange(weekSheetStones.OrderBy(l => l).ToArray());
             }
 
             return string.Join(Environment.NewLine, lines);
+        }
+
+        private string[] GetSheetList(int sheetCount)
+        {
+            var ordered = Enumerable.Range(0, sheetCount)
+                                    .Select(i => (char)(i + 'A'))
+                                    .ToList();
+
+            var result = new List<string>();
+
+            foreach (var index in Enumerable.Range(0, sheetCount))
+            {
+                var middle = ordered[ordered.Count() / 2];
+
+                result.Add($"{middle}");
+
+                ordered.Remove(middle);
+            }
+
+            return result.ToArray();
         }
 
         internal void Write(

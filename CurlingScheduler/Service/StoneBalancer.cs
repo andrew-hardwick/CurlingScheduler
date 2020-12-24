@@ -13,16 +13,16 @@ namespace CurlingScheduler.Service
             ref Schedule schedule,
             int weekCount,
             int drawCount,
-            int sheetCount)
+            int stoneCount)
         {
             var sheetStoneCounts =
                 new Dictionary<int, Dictionary<int, int>>();
 
-            foreach (var sheet in Enumerable.Range(0, sheetCount))
+            foreach (var sheet in Enumerable.Range(0, stoneCount))
             {
                 sheetStoneCounts[sheet] = new Dictionary<int, int>();
 
-                foreach (var stone in Enumerable.Range(0, sheetCount))
+                foreach (var stone in Enumerable.Range(0, stoneCount))
                 {
                     sheetStoneCounts[sheet][stone] = 0;
                 }
@@ -35,7 +35,7 @@ namespace CurlingScheduler.Service
                     ref schedule,
                     weekIndex,
                     drawCount,
-                    sheetCount,
+                    stoneCount,
                     ref sheetStoneCounts);
             }
         }
@@ -51,18 +51,18 @@ namespace CurlingScheduler.Service
         /// <param name="schedule"></param>
         /// <param name="weekIndex"></param>
         /// <param name="drawCount"></param>
-        /// <param name="sheetCount"></param>
+        /// <param name="stoneCount"></param>
         private void BalanceStones(
             ref Dictionary<string, Team> teams,
             ref Schedule schedule,
             int weekIndex,
             int drawCount,
-            int sheetCount,
+            int stoneCount,
             ref Dictionary<int,Dictionary<int, int>> sheetStoneCounts)
         {
-            var stoneList = Enumerable.Range(0, sheetCount).ToList();
+            var stoneList = Enumerable.Range(0, stoneCount).ToList();
 
-            var stonePerms = GetPermutations(stoneList, sheetCount).ToArray();
+            var stonePerms = GetPermutations(stoneList, stoneCount).ToArray();
 
             int minimumHighTeamStoneCount = int.MaxValue;
             int mimimumHighSheetStoneCount = int.MaxValue;
@@ -80,7 +80,7 @@ namespace CurlingScheduler.Service
                 {
                     teamStoneCounts[team] = new Dictionary<int, int>();
 
-                    foreach (var stone in Enumerable.Range(0, sheetCount))
+                    foreach (var stone in Enumerable.Range(0, stoneCount))
                     {
                         teamStoneCounts[team][stone] = teams[team].StoneCounts[stone];
                     }
@@ -88,11 +88,11 @@ namespace CurlingScheduler.Service
 
                 var sheetStoneCountsClone = new Dictionary<int, Dictionary<int, int>>();
 
-                foreach (var sheet in Enumerable.Range(0, sheetCount))
+                foreach (var sheet in Enumerable.Range(0, stoneCount))
                 {
                     sheetStoneCountsClone[sheet] = new Dictionary<int, int>();
 
-                    foreach (var stone in Enumerable.Range(0, sheetCount))
+                    foreach (var stone in Enumerable.Range(0, stoneCount))
                     {
                         sheetStoneCountsClone[sheet][stone] = sheetStoneCounts[sheet][stone];
                     }
@@ -102,10 +102,10 @@ namespace CurlingScheduler.Service
              
                 foreach (var game in week)
                 {
-                    teamStoneCounts[game.Teams.ElementAt(0).Name][permArray[game.Sheet]]++;
-                    teamStoneCounts[game.Teams.ElementAt(1).Name][permArray[game.Sheet]]++;
+                    teamStoneCounts[game.Teams.ElementAt(0).Name][permArray[game.DrawGameIndex]]++;
+                    teamStoneCounts[game.Teams.ElementAt(1).Name][permArray[game.DrawGameIndex]]++;
 
-                    sheetStoneCountsClone[game.Sheet][permArray[game.Sheet]]++;
+                    sheetStoneCountsClone[game.DrawGameIndex][permArray[game.DrawGameIndex]]++;
                 }
 
                 var highestTeamStoneCount = teamStoneCounts.SelectMany(t => t.Value)
@@ -137,8 +137,8 @@ namespace CurlingScheduler.Service
             {
                 for(int gameIndex = 0; gameIndex < schedule.Weeks[weekIndex].Draws[drawIndex].Games.Count(); gameIndex++)
                 {
-                    var sheet = schedule.Weeks[weekIndex].Draws[drawIndex].Games[gameIndex].Sheet;
-                    var stones = selectedStonePerm[sheet];
+                    var drawGameIndex = schedule.Weeks[weekIndex].Draws[drawIndex].Games[gameIndex].DrawGameIndex;
+                    var stones = selectedStonePerm[drawGameIndex];
 
                     schedule.Weeks[weekIndex].Draws[drawIndex].Games[gameIndex].Stones = stones;
 
@@ -150,7 +150,7 @@ namespace CurlingScheduler.Service
                 }
             }
 
-            foreach (var sheetIndex in Enumerable.Range(0, sheetCount))
+            foreach (var sheetIndex in Enumerable.Range(0, stoneCount))
             {
                 sheetStoneCounts[sheetIndex][selectedStonePerm[sheetIndex]]++;
             }
