@@ -8,6 +8,8 @@ namespace CurlingScheduler.Model
 
         public int Sheet { get; set; }
 
+        public int DrawGameIndex { get; set; }
+
         public int Stones { get; set; }
     }
 }

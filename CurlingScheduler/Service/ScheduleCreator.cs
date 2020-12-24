@@ -19,6 +19,7 @@ namespace CurlingScheduler.Service
         public (string, string) CreateSchedule(
             IEnumerable<string> teamNames,
             int sheetCount,
+            int stoneCount,
             int drawCount,
             int weekCount,
             DrawAlignment drawAlignment,
@@ -32,13 +33,12 @@ namespace CurlingScheduler.Service
             var schedule = _gameScheduler.Schedule(ref teams, weekCount);
 
             //Balance Draws
-
             _drawScheduler.Schedule(
                 ref teams, 
                 ref schedule, 
                 weekCount, 
                 drawCount,
-                sheetCount,
+                stoneCount,
                 drawAlignment);
 
             //Balance Sheets
@@ -49,7 +49,7 @@ namespace CurlingScheduler.Service
                 drawCount,
                 sheetCount);
 
-            //Balance Stones
+            ////Balance Stones
             if (balanceStones)
             {
                 _stoneBalancer.Schedule(
@@ -57,7 +57,7 @@ namespace CurlingScheduler.Service
                     ref schedule,
                     weekCount,
                     drawCount,
-                    sheetCount);
+                    stoneCount);
             }
 
             return (_outputWriter.FormatGameSchedule(schedule), _outputWriter.FormatStoneSchedule(schedule));

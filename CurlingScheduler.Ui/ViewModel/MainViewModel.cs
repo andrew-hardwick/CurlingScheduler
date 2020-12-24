@@ -29,8 +29,9 @@ namespace CurlingScheduler.Ui.ViewModel
 
         private string _currentFilename = string.Empty;
 
-        private int _sheetCount = 4;
-        private int _weekCount = 8;
+        private int _sheetCount = 5;
+        private int _stoneCount = 4;
+        private int _weekCount = 7;
         private int _drawCount = 1;
         private int _drawCountMinimum = 1;
 
@@ -53,7 +54,7 @@ namespace CurlingScheduler.Ui.ViewModel
         {
             var alignment = (DrawAlignment)Enum.Parse(typeof(DrawAlignment), DrawAlignment);
 
-            (GameSchedule, StoneSchedule) = _scheduleCreator.CreateSchedule(_teams, SheetCount, DrawCount, WeekCount, alignment, BalanceStones);
+            (GameSchedule, StoneSchedule) = _scheduleCreator.CreateSchedule(_teams, SheetCount, StoneCount, DrawCount, WeekCount, alignment, BalanceStones);
         }));
 
         public RelayCommand OpenFile => _openFile ?? (_openFile = new RelayCommand(() =>
@@ -117,7 +118,7 @@ namespace CurlingScheduler.Ui.ViewModel
                 WeekCount = _weekCount,
                 DrawCount = _drawCount,
                 DrawAlignment = _drawAlignment,
-                SheetCount = _sheetCount 
+                SheetCount = _sheetCount
             };
 
             _configManager.SaveConfiguration(_currentFilename, config);
@@ -138,13 +139,21 @@ namespace CurlingScheduler.Ui.ViewModel
         {
             var teamCount = _teams.Count();
 
-            var notEven = teamCount % (2 * SheetCount) != 0;
+            var notEven = teamCount % (2 * StoneCount) != 0;
 
-            DrawCountMinimum = teamCount / (2 * SheetCount) + (notEven ? 1 : 0);
+            DrawCountMinimum = teamCount / (2 * StoneCount) + (notEven ? 1 : 0);
 
             if (DrawCount < DrawCountMinimum)
             {
                 DrawCount = DrawCountMinimum;
+            }
+        }
+
+        private void UpdateStoneCountMaximum()
+        {
+            if (StoneCount > SheetCount)
+            {
+                StoneCount = SheetCount;
             }
         }
 
@@ -192,6 +201,17 @@ namespace CurlingScheduler.Ui.ViewModel
             set
             {
                 Set(() => SheetCount, ref _sheetCount, value);
+                UpdateStoneCountMaximum();
+                UpdateDrawCountMinimum();
+            }
+        }
+
+        public int StoneCount
+        {
+            get => _stoneCount;
+            set
+            {
+                Set(() => StoneCount, ref _stoneCount, value);
                 UpdateDrawCountMinimum();
             }
         }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -89,6 +90,11 @@ namespace CurlingScheduler.Service
                     teams[name].SheetCounts[choice]++;
                 }
                 schedule.Weeks[weekIndex].Draws[drawIndex].Games = schedule.Weeks[weekIndex].Draws[drawIndex].Games.OrderBy(g => g.Sheet).ToList();
+
+                for(int drawGameIndex = 0; drawGameIndex < schedule.Weeks[weekIndex].Draws[drawIndex].Games.Count(); drawGameIndex++)
+                {
+                    schedule.Weeks[weekIndex].Draws[drawIndex].Games[drawGameIndex].DrawGameIndex = drawGameIndex;
+                }
             }
         }
     }
