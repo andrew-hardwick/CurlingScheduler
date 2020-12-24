@@ -1,6 +1,6 @@
 # Curling Scheduler
 
-Created and Maintained by Rocket City Curling Club (RC3) http://rocketcitycurlingclub.org
+Created and Maintained for Rocket City Curling Club (RC3) http://rocketcitycurlingclub.org
 
 This application will schedule a single league/division of round robin play with configurable:
 
