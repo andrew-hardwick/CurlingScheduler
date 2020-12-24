@@ -37,7 +37,7 @@ namespace CurlingScheduler.Ui.ViewModel
 
         private bool _balanceStones = true;
 
-        private IEnumerable<string> _teams;
+        private IEnumerable<string> _teams = new string[] { "" };
 
         private ScheduleCreator _scheduleCreator;
         private ConfigurationManager _configManager;
