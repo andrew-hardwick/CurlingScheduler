@@ -60,7 +60,7 @@ namespace CurlingScheduler.Service
                     stoneCount);
             }
 
-            return (_outputWriter.FormatGameSchedule(schedule), _outputWriter.FormatStoneSchedule(schedule));
+            return (_outputWriter.FormatGameSchedule(schedule, sheetCount), _outputWriter.FormatStoneSchedule(schedule, sheetCount));
 
             //_outputWriter.Write(
             //    schedule,
