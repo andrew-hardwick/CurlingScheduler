@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Windows;
 
 namespace CurlingScheduler.Ui.ViewModel
 {
@@ -16,6 +17,7 @@ namespace CurlingScheduler.Ui.ViewModel
         private RelayCommand _generateSchedule;
         private RelayCommand _openFile;
         private RelayCommand _saveFile;
+        private RelayCommand _exitProgram;
 
         private ObservableCollection<string> _availableDrawAlignment =
             new ObservableCollection<string>(new string[] { "Balanced", "Squished" });
@@ -81,8 +83,11 @@ namespace CurlingScheduler.Ui.ViewModel
                 }
 
             }
+        }));
 
-
+        public RelayCommand ExitProgram => _exitProgram ?? (_exitProgram = new RelayCommand(() =>
+        {
+            Application.Current.Shutdown();
         }));
 
         private string LoadStringsFromFile(string userFile)
