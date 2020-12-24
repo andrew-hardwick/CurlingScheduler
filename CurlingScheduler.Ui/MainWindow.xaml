@@ -51,9 +51,9 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open Teams File" Command="{Binding OpenFile}"/>
-                <MenuItem Header="_Save Teams" Command="{Binding SaveFile}"/>
-                <MenuItem Header="Save _As" />
+                <MenuItem Header="_Load Configuration" Command="{Binding OpenFile}"/>
+                <MenuItem Header="_Save Configuration" Command="{Binding SaveFile}"/>
+                <MenuItem Header="Save Configuration _As" Command="{Binding SaveFileAs}" />
                 <Separator />
                 <MenuItem Header="_Exit" Command="{Binding ExitProgram}"/>
             </MenuItem>

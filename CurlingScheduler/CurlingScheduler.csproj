@@ -48,12 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Configuration.cs" />
     <Compile Include="Model\Draw.cs" />
     <Compile Include="Model\DrawAlignment.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\Schedule.cs" />
     <Compile Include="Model\Team.cs" />
     <Compile Include="Model\Week.cs" />
+    <Compile Include="Service\ConfigurationManager.cs" />
     <Compile Include="Service\DrawBalancer.cs" />
     <Compile Include="Service\GameScheduler.cs" />
     <Compile Include="Service\OutputWriter.cs" />
