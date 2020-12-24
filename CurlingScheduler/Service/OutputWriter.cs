@@ -27,13 +27,17 @@ namespace CurlingScheduler.Service
 
                 for(int drawIndex= 0; drawIndex < week.Draws.Count(); drawIndex++)
                 {
-                    var draw = week.Draws[drawIndex];
-
-                    lines.Add($"  Draw { drawIndex + 1}");
-
-                    foreach (var game in draw.Games)
+                    if (week.Draws[drawIndex].Games.Count() != 0)
                     {
-                        lines.Add($"    {(char)(game.Sheet + 'A')} - {game.Teams.ElementAt(0).Name} vs {game.Teams.ElementAt(1).Name}");
+
+                        var draw = week.Draws[drawIndex];
+
+                        lines.Add($"  Draw { drawIndex + 1}");
+
+                        foreach (var game in draw.Games)
+                        {
+                            lines.Add($"    {(char)(game.Sheet + 'A')} - {game.Teams.ElementAt(0).Name} vs {game.Teams.ElementAt(1).Name}");
+                        }
                     }
                 }
             }
