@@ -1,66 +1,93 @@
 ﻿using CurlingScheduler.Model;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace CurlingScheduler.Service
 {
     internal class GameScheduler
     {
+        private Random _random = new Random();
+
         internal Schedule Schedule(
             ref Dictionary<string, Team> teams,
             int weekCount)
         {
-            var weeklyGameCount = teams.Count() / 2;
+            var allPairs = CreateAllPairs(teams).ToArray();
 
             var weeks = new List<Week>();
 
             foreach (var i in Enumerable.Range(0, weekCount))
             {
-                weeks.Add(ScheduleWeek(ref teams, weeklyGameCount));
+                weeks.Add(
+                    CreateWeek(
+                        ref teams,
+                        allPairs[i % allPairs.Length]
+                    )
+                );
             }
 
             return new Schedule { Weeks = weeks };
         }
 
-        private Week ScheduleWeek(
-            ref Dictionary<string, Team> teams,
-            int gameCount)
+        private List<List<(string a, string b)>> CreateAllPairs(
+            Dictionary<string, Team> teams)
         {
-            var games = new List<Game>();
+            var set = new List<List<(string, string)>>();
 
-            var teamsByGames = 
-                teams.Values.OrderBy(t => t.OpposingTeamCounts.Sum(c => c.Value))
-                            .ToList();
+            var keys = teams.Keys.ToArray();
 
-            var week = new Week();
+            var teamCount = keys.Length;
 
-            foreach (var gameIndex in Enumerable.Range(0, gameCount))
+            var numPairs = teamCount / 2;
+
+            var restKeys = keys.Skip(1).ToArray();
+            var restLength = restKeys.Length;
+
+            for(int i = 1; i < teamCount; i++)
             {
-                var primary = teamsByGames[0];
-                teamsByGames.Remove(primary);
+                var pairs = new List<(string a, string b)>();
 
-                var opponent = SelectOpponent(teamsByGames, primary);
-                teamsByGames.Remove(opponent);
+                pairs.Add((keys[0], keys[i]));
 
-                teams[primary.Name].OpposingTeamCounts[opponent.Name] ++;
-                teams[opponent.Name].OpposingTeamCounts[primary.Name] ++;
+                for(int offset = 1; offset < numPairs; offset++)
+                {
+                    var aIndex = (i - 1 - offset + restLength) % restLength;
+                    var bIndex = (i - 1 + offset + restLength) % restLength;
 
-                games.Add(new Game { Teams = new Team[] { primary, opponent } });
+                    pairs.Add((restKeys[aIndex], restKeys[bIndex]));
+                }
+
+                set.Add(pairs);
             }
 
-            week.GamesWithoutDrawAssignment = games;
-
-            return week;
+            return set;
         }
 
-        private Team SelectOpponent(
-            IEnumerable<Team> teams,
-            Team primary)
+        private Game CreateGame(
+            ref Dictionary<string, Team> teams,
+            string teamOneName,
+            string teamTwoName)
         {
-            var teamsByOpponentCount =
-                teams.OrderBy(t => t.OpposingTeamCounts[primary.Name]);
+            teams[teamOneName].OpposingTeamCounts[teamTwoName]++;
+            teams[teamTwoName].OpposingTeamCounts[teamOneName]++;
 
-            return teamsByOpponentCount.ElementAt(0);
+            return new Game { Teams = new Team[] { teams[teamOneName], teams[teamTwoName] } };
+        }
+
+        private Week CreateWeek(
+            ref Dictionary<string, Team> teams,
+            IEnumerable<(string t1, string t2)> games)
+        {
+            var week = new Week();
+
+            foreach (var game in games)
+            {
+                week.GamesWithoutDrawAssignment.Add(CreateGame(ref teams, game.t1, game.t2));
+            }
+
+            return week;
         }
     }
 }

@@ -8,6 +8,6 @@ namespace CurlingScheduler.Model
         public List<Draw> Draws { get; set; }
 
         [JsonIgnore]
-        public List<Game> GamesWithoutDrawAssignment { get; set; }
+        public List<Game> GamesWithoutDrawAssignment { get; set; } = new List<Game>();
     }
 }
