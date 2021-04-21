@@ -12,6 +12,7 @@ namespace CurlingScheduler.Model
         public int WeekCount { get; set; } = 7;
         public int DrawCount { get; set; } = 1;
         public int SheetCount { get; set; } = 5;
+        public int StoneCount { get; set; } = 5;
         public string DrawAlignment { get; set; }
     }
 }

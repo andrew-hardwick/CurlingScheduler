@@ -118,7 +118,8 @@ namespace CurlingScheduler.Ui.ViewModel
                 WeekCount = _weekCount,
                 DrawCount = _drawCount,
                 DrawAlignment = _drawAlignment,
-                SheetCount = _sheetCount
+                SheetCount = _sheetCount,
+                StoneCount = _stoneCount
             };
 
             _configManager.SaveConfiguration(_currentFilename, config);
@@ -130,6 +131,7 @@ namespace CurlingScheduler.Ui.ViewModel
 
             TeamsText = config.Teams.Aggregate((a, b) => ($"{a}{Environment.NewLine}{b}"));
             WeekCount = config.WeekCount;
+            StoneCount = config.StoneCount;
             DrawCount = config.DrawCount;
             DrawAlignment = config.DrawAlignment;
             SheetCount = config.SheetCount;
